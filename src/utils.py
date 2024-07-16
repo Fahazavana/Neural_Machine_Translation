@@ -22,10 +22,10 @@ class Config:
     TRAIN_DATA: str = ""
     VAL_RAW: str = ""
     VAL_DATA: str = ""
-    TRAIN_AFRIKAANS: List[str] = field(default_factory=list)
-    TRAIN_ENGLISH: List[str] = field(default_factory=list)
-    VAL_AFRIKAANS: List[str] = field(default_factory=list)
-    VAL_ENGLISH: List[str] = field(default_factory=list)
+    TRAIN_SOURCE: List[str] = field(default_factory=list)
+    VAL_SOURCE: List[str] = field(default_factory=list)
+    TRAIN_TARGET: List[str] = field(default_factory=list)
+    VAL_TARGET: List[str] = field(default_factory=list)
 
 
 def load_config(config_file="config.json"):
@@ -38,14 +38,14 @@ def load_config(config_file="config.json"):
         TRAIN_DATA=data["TRAIN_DATA"],
         VAL_RAW=data["VAL_RAW"],
         VAL_DATA=data["VAL_DATA"],
-        TRAIN_AFRIKAANS=data["TRAIN_AFRIKAANS"],
-        TRAIN_ENGLISH=data["TRAIN_ENGLISH"],
-        VAL_AFRIKAANS=data["VAL_AFRIKAANS"],
-        VAL_ENGLISH=data["VAL_ENGLISH"],
+        TRAIN_SOURCE=data["TRAIN_SOURCE"],
+        VAL_SOURCE=data["VAL_SOURCE"],
+        TRAIN_TARGET=data["TRAIN_TARGET"],
+        VAL_TARGET=data["VAL_TARGET"],
     )
 
 
-def train_model(model, train_loader, optimizer, criterion, device, epochs, source_test, target_test, source_lang, target_lang):
+def train_model(model, train_loader, optimizer, criterion, device, epochs, source_test, target_test, translator):
     N = len(train_loader.dataset)
     for epoch in range(epochs):
         pbar = tqdm(train_loader, unit="batch", desc=f"Epoch {epoch + 1}/{epochs}")
@@ -67,20 +67,16 @@ def train_model(model, train_loader, optimizer, criterion, device, epochs, sourc
             run_loss += loss.item() * source.size(0)
             pbar.set_postfix(loss=f"{run_loss / N:.3f}")
 
-        predicted = translate_sentece(model, source_test, source_lang, target_lang, device)
+        predicted = translator.translate_sentence(source_test)
         bleu = torch_bleu_score([predicted], [target_test])
         print(f"Predicted: {predicted}")
         print(f"Reference: {target_test}")
         print(f"BLEU Score: {bleu.item()}")
 
 
-def translate_sentece(model, sentence, source_lang, target_lang, device):
-    text = [source_lang.stoi[word] if word in source_lang.stoi else source_lang.stoi['<unk>'] for word in sentence.strip().split()]
-    text = torch.tensor(text, dtype=torch.long).unsqueeze(1).to(device)
-    translated = model.translate(text)
-    return " ".join([target_lang.itos[idx] for idx in translated])
-
-
 def torch_bleu_score(candidat, reference, device=None):
     n_gram = min(len(candidat[0].split()), len(reference[0].split()), 4)
     return bleu_score(candidat, reference, n_gram, device=device)
+
+
+

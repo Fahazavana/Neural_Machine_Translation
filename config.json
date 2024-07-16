@@ -4,7 +4,23 @@
   "TRAIN_DATA": "./data/train/norm",
   "VAL_RAW": "./data/val",
   "VAL_DATA": "./data/val/norm",
-  "TRAIN_AFRIKAANS": [
+"TRAIN_SOURCE": [
+  "data414_2021_a1.en.txt",
+  "data414_2021_a2.en.txt",
+  "data414_2020_a1.en.txt",
+  "ss414_2018_a1.en.txt",
+  "ss414_2018_a2.en.txt",
+  "ss414_2018_a3.en.txt",
+  "ss414_2019_a1.en.txt",
+  "ss414_2019_a2.en.txt",
+  "ss414_2019_a3.en.txt"
+],
+"VAL_SOURCE": [
+  "compsys414_2017_a1.en.txt",
+  "compsys414_2017_a2.en.txt",
+  "compsys414_2017_a3.en.txt"
+],
+  "TRAIN_TARGET": [
     "data414_2021_a1.af.txt",
     "data414_2021_a2.af.txt",
     "data414_2020_a1.af.txt",
@@ -15,25 +31,9 @@
     "ss414_2019_a2.af.txt",
     "ss414_2019_a3.af.txt"
   ],
-  "TRAIN_ENGLISH": [
-    "data414_2021_a1.en.txt",
-    "data414_2021_a2.en.txt",
-    "data414_2020_a1.en.txt",
-    "ss414_2018_a1.en.txt",
-    "ss414_2018_a2.en.txt",
-    "ss414_2018_a3.en.txt",
-    "ss414_2019_a1.en.txt",
-    "ss414_2019_a2.en.txt",
-    "ss414_2019_a3.en.txt"
-  ],
-  "VAL_AFRIKAANS": [
+  "VAL_TARGET": [
     "compsys414_2017_a1.af.txt",
     "compsys414_2017_a2.af.txt",
     "compsys414_2017_a3.af.txt"
-  ],
-  "VAL_ENGLISH": [
-    "compsys414_2017_a1.en.txt",
-    "compsys414_2017_a2.en.txt",
-    "compsys414_2017_a3.en.txt"
   ]
 }

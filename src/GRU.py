@@ -14,8 +14,8 @@ class Encoder(nn.Module):
         # x: L x B
         embedded = self.embedding(x)
         # embedded: L x B x E
-        outputs, hidden = self.gru(embedded)
-        return outputs, hidden
+        output, hidden = self.gru(embedded)
+        return output, hidden
 
 
 class Decoder(nn.Module):

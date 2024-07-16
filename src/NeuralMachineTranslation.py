@@ -24,15 +24,3 @@ class NeuralMachineTranslation(nn.Module):
             x = target[t] if np.random.random() < tch_force else yhat
         return outputs
 
-    def translate(self, source, max_seq_len=30):
-        with torch.no_grad():
-            _, hidden = self.encoder(source)
-            x = source[0, 0].unsqueeze(0)
-            outputs = [1]
-            t = 0
-            while x.item() != 2 and t < max_seq_len:
-                output, hidden = self.decoder(x, hidden)
-                x = torch.argmax(output, 1)
-                outputs.append(x.item())
-                t += 1
-        return outputs
