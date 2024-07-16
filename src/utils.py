@@ -75,7 +75,7 @@ def train_model(model, train_loader, optimizer, criterion, device, epochs, sourc
 
 
 def translate_sentece(model, sentence, source_lang, target_lang, device):
-    text = [source_lang.stoi[word] for word in sentence.strip().split()]
+    text = [source_lang.stoi[word] if word in source_lang.stoi else source_lang.stoi['<unk>'] for word in sentence.strip().split()]
     text = torch.tensor(text, dtype=torch.long).unsqueeze(1).to(device)
     translated = model.translate(text)
     return " ".join([target_lang.itos[idx] for idx in translated])

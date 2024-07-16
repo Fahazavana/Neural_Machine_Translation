@@ -35,7 +35,7 @@ class Corpus:
         return [[self.itos[word] for word in sentence] for sentence in data]
 
     def encode_new(self, data):
-        return [[self.itos[word] if word in self.stoi else 3 for word in sentence] for sentence in data]
+        return [[self.stoi[word] if word in self.stoi else 3 for word in sentence] for sentence in data]
 
 
 class LangData(Dataset):
