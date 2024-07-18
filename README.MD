@@ -1,11 +1,18 @@
 # NEURAL MACHINE TRANSLATION
 
-This project focus principally on Neural Machine translation. It aim to compare various implementaion from scratch, the architecture used are:
-* Vanilla RNN
-* GRU
-* LSTM
-* GRU + Attention
-* GRU + Transformer?
+This project focusu primaly in translating English to Afrikaans. It also aim to compare the following arhitecture:
+
+* Vanilla:
+	* RNN
+	* GRU
+	* LSTM
+* With Scaled Dot product Attention:
+	* RNN
+	* GRU
+	* LSTM
+
+These model are tarined on a private dataset conatining Engeinnering Assement corpus (Stellenboch Univeristy) and augmentend with some data from tatoeba projects.
+
 
 ## Depemdencies
 
