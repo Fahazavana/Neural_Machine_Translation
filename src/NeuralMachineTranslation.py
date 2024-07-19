@@ -4,14 +4,14 @@ import numpy as np
 
 
 class NeuralMachineTranslation(nn.Module):
-    def __init__(self, encoder, decoder, target_vocab_size, tch_force=0.5):
+    def __init__(self, encoder, decoder, target_vocab_size, tch_force=0.9):
         super(NeuralMachineTranslation, self).__init__()
         self.encoder = encoder
         self.decoder = decoder
         self.tch_force = tch_force
         self.target_size = target_vocab_size
 
-    def forward(self, source, target, tch_force=0.9):
+    def forward(self, source, target):
         target_len, batch_size = target.shape
         _, hidden = self.encoder(source)
         outputs = torch.zeros(batch_size, target_len, self.target_size).to(

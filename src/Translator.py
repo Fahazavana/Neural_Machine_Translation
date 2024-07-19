@@ -19,7 +19,6 @@ def greedy_search(model, source, max_len=20):
 	end_token = 2
 	inputs = source[0]
 	sequence = [1]
-	max_len = max(source.shape[0]+5, max_len)
 	model.eval()
 	with torch.no_grad():
 		_, hidden = model.encoder(source)
@@ -100,6 +99,7 @@ class Translator:
 		self.device = device
 
 	def translate_sentence(self, sentence, method="greedy", beam_width=3, max_len=20):
+		max_len = max(max_len, len(sentence))
 		text = [
 			(
 				self.source_lang.stoi[word]

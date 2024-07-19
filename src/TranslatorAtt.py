@@ -1,5 +1,5 @@
 
-from Translator import Translator,  BeamSearchNode
+from .Translator import Translator,  BeamSearchNode
 import torch 
 
 
@@ -14,14 +14,14 @@ class BeamSearchNodeAtt(BeamSearchNode):
 		self.encoder_out = encoder_out
 
 
-def beam_search_att(model, source, beam_width=3, max_len=20):
+def beam_search_att(model, source, beam_width=3, max_len=20, lstm=False):
 	
 	start_token, end_token = source[0], 2
 	model.eval()
 	with torch.no_grad():
 		# Get the compresed version
 		encoder_out, hidden = model.encoder(source)
-		hidden = torch.zeros_like(hidden)
+		hidden = (torch.zeros_like(hidden[0]), torch.zeros_like(hidden[1])) if lstm else torch.zeros_like(hidden)
 		# Initialize
 		nodes = [BeamSearchNodeAtt(hidden, encoder_out, None, start_token, 0, 1)]
 		end_nodes = []
@@ -73,14 +73,14 @@ def beam_search_att(model, source, beam_width=3, max_len=20):
 	return sequence
 
 
-def greedy_search_att(model, source, max_len=20):
+def greedy_search_att(model, source, max_len=20, lstm=False):
 	end_token = 2
 	inputs = source[0]
 	sequence = [1]
 	model.eval()
 	with torch.no_grad():
 		encoder_out, hidden = model.encoder(source)
-		hidden = torch.zeros_like(hidden)
+		hidden = (torch.zeros_like(hidden[0]), torch.zeros_like(hidden[1])) if lstm else torch.zeros_like(hidden)
 		for _ in range(max_len):
 			output, hidden = model.decoder(inputs, hidden, encoder_out)
 			top1 = output.argmax(1)
@@ -96,8 +96,9 @@ def greedy_search_att(model, source, max_len=20):
 
 
 class TranslatorAtt(Translator):
-	def __init__(self, model, source_lang, target_lang, device):
+	def __init__(self, model, source_lang, target_lang, device, lstm=False):
 		super(TranslatorAtt, self).__init__(model, source_lang, target_lang, device)
+		self.lstm = lstm
 		
 	def translate_sentence(self, sentence, method="greedy", beam_width=3, max_len=20):
 		text = [
@@ -109,11 +110,11 @@ class TranslatorAtt(Translator):
 			for word in sentence.strip().split()
 		]
 		text = torch.tensor(text, dtype=torch.long).unsqueeze(1).to(self.device)
-
+		max_len = max(text.shape[0], 20)
 		if method == "greedy":
-			translated = greedy_search_att(self.model, text, max_len)
+			translated = greedy_search_att(self.model, text, max_len, self.lstm)
 		elif method == "beam":
-			translated = beam_search_att(self.model, text, beam_width, max_len)
+			translated = beam_search_att(self.model, text, beam_width, max_len, self.lstm)
 		else:
 			raise ValueError("Unknown method: choose between 'greedy' or 'beam'")
 

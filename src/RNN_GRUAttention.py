@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from NeuralMachineTranslation import NeuralMachineTranslation
+from .NeuralMachineTranslation import NeuralMachineTranslation
 
 
 class Encoder(nn.Module):
@@ -58,6 +58,7 @@ class Decoder(nn.Module):
         else:
             raise ValueError(f"type must be 'RNN' or 'GRU', got {type}")
         d = 4 if bidirectional else 2
+        self.embedding = nn.Embedding(input_size, embd_size)
         self.fc = nn.Linear(
             hidden_size * d, input_size
         )  # Changed concatenation dimension
@@ -70,7 +71,7 @@ class Decoder(nn.Module):
         encoder_outputs = encoder_outputs.permute(1, 0, 2)
         decoded = decoded.permute(1, 0, 2)
         attn_scores = torch.einsum("blh,bih->bl", encoder_outputs, decoded) / np.sqrt(
-            self.gru.hidden_size
+            self.rnn.hidden_size
         )
         alpha = attn_scores.softmax(
             dim=1
@@ -85,13 +86,12 @@ class Decoder(nn.Module):
 
 
 class Attention_NMT(NeuralMachineTranslation):
-    def __init__(self, encoder, decoder, target_vocab_size, tch_force=0.5):
+    def __init__(self, encoder, decoder, target_vocab_size, tch_force=0.9):
         super(Attention_NMT, self).__init__(encoder, decoder, target_vocab_size, tch_force)
 
     def forward(self, source, target):
         target_len, batch_size = target.shape
         encoder_output, hidden = self.encoder(source)
-
         outputs = torch.zeros(batch_size, target_len, self.target_size).to(
             source.device
         )
@@ -105,10 +105,10 @@ class Attention_NMT(NeuralMachineTranslation):
         return outputs
     
 class RNNAtt(Attention_NMT):
-	def __init__(self, encoder, decoder, target_vocab_size, tch_force=0.5):
+	def __init__(self, encoder, decoder, target_vocab_size, tch_force=0.9):
 		super(RNNAtt, self).__init__(encoder, decoder, target_vocab_size, tch_force)
 
 class GRUAtt(NeuralMachineTranslation):
-    def __init__(self, encoder, decoder, target_vocab_size, tch_force=0.5):
+    def __init__(self, encoder, decoder, target_vocab_size, tch_force=0.9):
         super(GRUAtt, self).__init__(encoder, decoder, target_vocab_size, tch_force)
 
