@@ -52,6 +52,7 @@ Ensure all dependencies are installed before running the project.
 │   └── *.py
 ├── *.ipynb
 ├── *.json
+├── *.npy
 └── *.MD
 ```
 
@@ -87,6 +88,8 @@ Ensure all dependencies are installed before running the project.
 - **04-RNNAttention.ipynb**: Jupyter Notebook for RNN with attention experiments.
 - **05-GRUAttention.ipynb**: Jupyter Notebook for GRU with attention experiments.
 - **06-LSTMAttention.ipynb**: Jupyter Notebook for LSTM with attention experiments.
+- **07-Fine-tuning.ipynb**: Jupyter Notebook for Fine tunning experiments (This notebook have been runned on Kaggle).
+- **08-Loss_visualization.ipynb**: Jupyter Notebook for Vilsualizing all the loss during training.
 
 - **README.md**: This README file.
 - **config.json**: Configuration file for the project.
@@ -96,13 +99,16 @@ Ensure all dependencies are installed before running the project.
 
 1. **Data Preparation**: Ensure the datasets are correctly placed in the `data` directory.
 2. **Training**: Use the provided Jupyter Notebooks (e.g., `00-RNN.ipynb`, `01-GRU.ipynb`) to train the models.
-3. **Evaluation**: Evaluate the models using the validation data and compare performance.
-4. **Report Generation**: Use the LaTeX files in the `report` directory to generate the final report.
+3. **Evaluation**: With each notebook
 
-## License
+## References
 
+* Herman Kamper, NLP817, [https://www.kamperh.com/nlp817]()
 
-## Acknowledgments
-
-- Stellenbosch University for the Engineering Assessment corpus.
-- Tatoeba project for additional data.
+* Hugging Face [https://huggingface.co/]()
+* Open Parallel Corpora [https://opus.nlpl.eu/]()
+* PyTorch: AdamW [https://pytorch.org/docs/stable/generated/torch.optim.AdamW.html]()
+* Google Sentencepiece [https://github.com/google/sentencepiece]()
+* Helsinki NLP [https://blogs.helsinki.fi/language-technology/](), [https://huggingface.co/Helsinki-NLP]()
+* Junczys-Dowmunt, M., Grundkiewicz, R., Dwojak, T., Hoang, H., Heafield, K., Neckermann, T., Seide, F., Germann, U., Aji, A.F., Bogoychev, N. and Martins, A.F., 2018. Marian: Fast neural machine translation in C++. \textit{arXiv preprint arXiv:1804.00344.}
+* Jörg Tiedemann and Santhosh Thottingal. 2020. OPUS-MT - Building open translation services for the World. \textit{In Proceedings of the 22nd Annual Conference of the European Association for Machine Translation, pages 479–480, Lisboa, Portugal. European Association for Machine Translation.}
