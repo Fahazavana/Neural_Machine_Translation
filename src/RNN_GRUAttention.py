@@ -12,18 +12,15 @@ class Encoder(nn.Module):
         embd_size,
         hidden_size,
         num_layers,
-        type="RNN",
-        bidirectional=False,
+        type="RNN"
     ) -> None:
         super(Encoder, self).__init__()
         if type == "RNN":
             self.rnn = nn.RNN(
-                embd_size, hidden_size, num_layers, bidirectional=bidirectional
-            )
+                embd_size, hidden_size, num_layers)
         elif type == "GRU":
             self.rnn = nn.GRU(
-                embd_size, hidden_size, num_layers, bidirectional=bidirectional
-            )
+                embd_size, hidden_size, num_layers)
         else:
             raise ValueError(f"type must be 'RNN' or 'GRU', got {type}")
         self.embedding = nn.Embedding(input_size, embd_size)
@@ -44,23 +41,20 @@ class Decoder(nn.Module):
         hidden_size,
         num_layers,
         type="RNN",
-        bidirectional=False,
     ) -> None:
         super(Decoder, self).__init__()
         if type == "RNN":
             self.rnn = nn.RNN(
-                embd_size, hidden_size, num_layers, bidirectional=bidirectional
+                embd_size, hidden_size, num_layers
             )
         elif type == "GRU":
             self.rnn = nn.GRU(
-                embd_size, hidden_size, num_layers, bidirectional=bidirectional
-            )
+                embd_size, hidden_size, num_layers)
         else:
             raise ValueError(f"type must be 'RNN' or 'GRU', got {type}")
-        d = 4 if bidirectional else 2
         self.embedding = nn.Embedding(input_size, embd_size)
         self.fc = nn.Linear(
-            hidden_size * d, input_size
+            hidden_size * 2, input_size
         )  # Changed concatenation dimension
 
     def forward(self, x, hidden, encoder_outputs):
@@ -96,7 +90,7 @@ class Attention_NMT(NeuralMachineTranslation):
             source.device
         )
         x = target[0]
-        hidden = torch.zeros_like(hidden)
+        # hidden = torch.zeros_like(hidden)
         for t in range(1, target_len):
             output, hidden = self.decoder(x, hidden, encoder_output)
             outputs[:, t, :] = output

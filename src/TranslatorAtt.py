@@ -21,7 +21,7 @@ def beam_search_att(model, source, beam_width=3, max_len=20, lstm=False):
 	with torch.no_grad():
 		# Get the compresed version
 		encoder_out, hidden = model.encoder(source)
-		hidden = (torch.zeros_like(hidden[0]), torch.zeros_like(hidden[1])) if lstm else torch.zeros_like(hidden)
+		# hidden = (torch.zeros_like(hidden[0]), torch.zeros_like(hidden[1])) if lstm else torch.zeros_like(hidden)
 		# Initialize
 		nodes = [BeamSearchNodeAtt(hidden, encoder_out, None, start_token, 0, 1)]
 		end_nodes = []
@@ -80,7 +80,7 @@ def greedy_search_att(model, source, max_len=20, lstm=False):
 	model.eval()
 	with torch.no_grad():
 		encoder_out, hidden = model.encoder(source)
-		hidden = (torch.zeros_like(hidden[0]), torch.zeros_like(hidden[1])) if lstm else torch.zeros_like(hidden)
+		# hidden = (torch.zeros_like(hidden[0]), torch.zeros_like(hidden[1])) if lstm else torch.zeros_like(hidden)
 		for _ in range(max_len):
 			output, hidden = model.decoder(inputs, hidden, encoder_out)
 			top1 = output.argmax(1)

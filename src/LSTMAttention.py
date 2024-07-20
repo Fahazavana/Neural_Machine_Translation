@@ -64,7 +64,7 @@ class LSTMANMT(nn.Module):
             source.device
         )
         x = target[0]
-        hidden = torch.zeros_like(hidden[0]), torch.zeros_like(hidden[1])
+        # hidden = torch.zeros_like(hidden[0]), torch.zeros_like(hidden[1])
         for t in range(1, target_len):
             output, hidden = self.decoder(x, hidden, encoder_output)
             outputs[:, t, :] = output

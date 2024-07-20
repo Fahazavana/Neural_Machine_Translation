@@ -76,8 +76,35 @@ For the finetuning, we evaluate it before the training and after training on the
 
 
 \section{Results and discussion}
+\subsection{From-Scratch Implementation}
+\begin{table}[H]
+	\centering
+	\begin{tabular}{@{}lccccc@{}}
+	\cmidrule(l){3-6}
+	\multicolumn{2}{l}{} & \multicolumn{2}{c}{Validation set 1} & \multicolumn{2}{c}{Validation set 2} \\ \midrule
+	Model     & \#Epochs & BLEU G          & BLEU B         & BLEU G          & BLEU B         \\ \midrule
+	RNN       & 50       & 0.05              & 0.02             & 0.05              & 0.02             \\
+	GRU       & 15       & 0.38              & 0.35             & 0.14              & 0.12             \\
+	LSTM      & 20       & 0.28              & 0.24             & 0.12              & 0.10             \\
+	RNN+Att.  & 15       & 0.39              & 0.33             & 0.18              & 0.17             \\
+	GRU+Att.  & 15       & 0.31              & 0.32             & 0.13              & 0.16             \\
+	LSTM+Att. & 20       & 0.28              & 0.30             & 0.11              & 0.13             \\ \bottomrule
+	\end{tabular}
+	\end{table}
 
+	\subsection{Finetuning}
+\begin{table}[H]
+\begin{tabular}{lccc}
+\toprule
+Model         & \#Epochs & LR & BLEU\\
+\midrule
+opus-mt-en-af &   N/A       &  N/A  & 0.28  \\
+Fine Tuned opus-mt-en-af &  50        & $2\times10^{-5}$    & 0.37  \\
+\bottomrule
+\end{tabular}
+\end{table}
 \section{Conclusion}
+
 
 \begin{thebibliography}{1}
 
