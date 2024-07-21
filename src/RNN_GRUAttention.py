@@ -55,7 +55,7 @@ class Decoder(nn.Module):
         self.embedding = nn.Embedding(input_size, embd_size)
         self.fc = nn.Linear(
             hidden_size * 2, input_size
-        )  # Changed concatenation dimension
+        )  
 
     def forward(self, x, hidden, encoder_outputs):
         # x: B -> 1 x B
@@ -69,11 +69,11 @@ class Decoder(nn.Module):
         )
         alpha = attn_scores.softmax(
             dim=1
-        )  # Alpha: B x L (L - encoder output sequence length)
+        )  # Alpha: B x L 
         context = torch.bmm(alpha.unsqueeze(1), encoder_outputs)  # Context: 1 x B x H
         output = torch.cat(
             (decoded.permute(1, 0, 2), context.permute(1, 0, 2)), dim=-1
-        )  # Concatenate on hidden size dimension
+        )  
         ##############################################################################################
         prediction = self.fc(output)  # Prediction: 1 x B x V -> B x V_out
         return prediction.squeeze(0), hidden
@@ -90,7 +90,7 @@ class Attention_NMT(NeuralMachineTranslation):
             source.device
         )
         x = target[0]
-        # hidden = torch.zeros_like(hidden)
+        
         for t in range(1, target_len):
             output, hidden = self.decoder(x, hidden, encoder_output)
             outputs[:, t, :] = output

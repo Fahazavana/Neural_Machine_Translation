@@ -1,5 +1,5 @@
 \begin{abstract}
-	Language is one of the most important tools that we have. However, we do not always speak the same language, leading to the development of various tools to automatically translate a given language to another language. Neural Machine Translation (NMT) is one of these powerful tools, but it may not cover all terms and vocabulary in various domains. That motivated us to use two different approaches to perform such a task, by implementing an NMT from scratch and fine-tuning an existing model to translate English into Afrikaans using a relatively small data set from an engineering assessment of the Stellenbosch University dataset. We obtained similar performance through these two experiments.
+	Language is one of the most important tools that we have. However, we do not always speak the same language, leading to the development of various tools to automatically translate a given language to another language. Neural Machine Translation (NMT) is one of these powerful tools, but it may not cover all terms and vocabulary in various domains. That motivated us to use two different approaches to perform such a task, by implementing an NMT from scratch and fine-tuning an existing model to translate English into Afrikaans using a relatively small data set from an engineering assessment of the Stellenbosch University dataset. We obtained a similar performance through these two experiments.
 \end{abstract}
 
 \section{Introduction}
@@ -8,7 +8,7 @@ Effective communication across languages is crucial in today's globalized world.
 \section{Neural Machine Translation}\label{nmt}
 Translation task consists of converting a text $\mbf{x}=x_{1:T}$ from a language $A$ into a text $\mbf{y}=y_{1:S}$ of a language $B$, that have the same meaning and sense.
 
-Compared to humans, computers do not understand text and even words. But, with the appropriate modelling and tools it can perform such tasks. For Neural Machine Translation (NMT), it assigns a probability  $P_{\mbf{\theta}}(y|x)$ for any possible translation $y$ of $x$ then choose the one with the highest probability. In that case, the probability of the whole translation is given by :
+Compared to humans, computers do not understand text and even words. But, with the appropriate modelling and tools, it can perform such tasks. For Neural Machine Translation (NMT), it assigns a probability  $P_{\mbf{\theta}}(y|x)$ for any possible translation $y$ of $x$ then choose the one with the highest probability. In that case, the probability of the whole translation is given by :
 \begin{equation}
 	P(\mbf{y}|\mbf{x})=\prod_{t=1}^S P_{\mbf{\theta}}(y_t|y_{1:t-1}, \mbf{x})
 \end{equation}
@@ -108,27 +108,27 @@ However, these architectures can be hard to train and computationally slow due t
 
 Inspired by how humans translate a sentence, researchers introduce attention mechanisms. This technique allows the model to keep track of the long-term dependency, and not rely only on the compressed version from the encoder, but with the output of the encoder at each time step.
 
-Furthermore, they come up with the self-attention mechanism by producing the layer  $n$ as a form of the weighted sum of the previous layer $n-1$. This method does not need any more recurrency between each term of the sequence. Lastly, attention and self-attention are the main components of the so-called transformer block found at the state-of-the-art of many machine learning models today.
+Furthermore, they come up with the self-attention mechanism by producing the layer  $n$ as a form of the weighted sum of the previous layer $n-1$. This method does not need any more recurrence between each term of the sequence. Lastly, attention and self-attention are the main components of the so-called transformer block found at the state-of-the-art of many machine learning models today.
 
 
 The optimal weights of the neural networks (parameters) $\mbf{\theta}$ are found by minimizing the per-word (sequence) negative log-likelihood:
 \begin{equation}
 	J(\mbf{\theta}) = -\frac{1}{S}\sum_{i=1}^{S}\log P_{\mbf{\theta}}(y_t|y_{1:t-1}, \mbf{x})
 \end{equation}
-Which can be done by using gradient-based optimisation.
+Which can be done by using gradient-based optimization.
 
 \section{Methodology}\label{mth}
 This section presents different parts of the methodology in our experimentation and the reasons behind them.
 
 \subsection{Dataset}
-The initial dataset is a relatively small parallel English-Afrikaans from an engineering assessment of Stellenbosch University. This dataset is then augmented with data from Tatoeba \cite{tatoeba}. As the assessment comes from \LaTeX files, we combine all the mathematical environments by removing spaces to treat them as a single word. We also add space on delimiter characters such as ``(),[],\{\}'' to treat them as a single word by removing extra spaces. Finally, we switched it to lowercase to be more efficient for our from-scratch implementation, and a special character token for the start of the sentence and the end of the sentence is used to replace ``!, ? and .'' in the text.
+The initial dataset is a relatively small parallel English-Afrikaans from an engineering assessment of Stellenbosch University. This dataset is then augmented with data from Tatoeba \cite{tatoeba}. As the assessment comes from \LaTeX files, we combine all the mathematical environments by removing spaces to treat them as a single word. We also add space on delimiter characters such as ``(),[],\{\}'' to treat them as a single word by removing extra spaces. Finally, we switched it to lowercase to be more efficient for our from-scratch implementation, and a special character token for the start of the sentence and the end of the sentence is used to replace ``!, ?, .'' in the text.
 
 
 But, in the second part of the experimentation, we just handled the latex mathematical environment without changing the case and used the tokenizer provided by the pre-trained model that we used.
 
 \subsection{From Scratch Implementation}
 
-We principally focus on the fundamental basis of the implementation with PyTorch, so we use the same hyper-parameter for each implemented model as in Table \ref{tab:hyper}.
+We principally focus on the fundamental basis of the implementation with PyTorch, so we use the same hyperparameter for each implemented model as in Table \ref{tab:hyper}.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{lc}
@@ -143,29 +143,29 @@ We principally focus on the fundamental basis of the implementation with PyTorch
 	\caption{Hyperparameters used in the from-scratch models.}
 	\label{tab:hyper}
 \end{table}
-Thus, with these parameters, we implement the following model:
+Thus, with these parameters, we implement the following model\footnote{More details are provided in the notebook with torchinfo}:
 \begin{itemize}
 	\item Vanilla: RNNs, GRU, LSTM
 	\item With scaled dot-product attention:  RNNs, GRU, LSTM
 \end{itemize}
-The scaled dot product is defined is defined by :
+The scaled dot product is defined by :
 \begin{equation}
 	a(\mbf{q, v}) = \frac{\mbf{q^\top v}}{\sqrt{D}}
 \end{equation}
-where $\mbf{q}$ is the current output of the decoder, $\mbf{v}$ an output of the decoder at some time step, and  $D$ is the dimension of $\mbf{q}$ (and $\mbf{v}$ as well because they must have the same dimension).These value are passed through a $\softmax$ layer to have a vector formed by some $\alpha[0,1]$, then we compute the context vector given by :
+where $\mbf{q}$ is the current output of the decoder, $\mbf{v}$ an output of the decoder at some time step, and  $D$ is the dimension of $\mbf{q}$ (and $\mbf{v}$ as well because they must have the same dimension). These values are passed through a $\softmax$ layer to have a vector formed by some $\alpha[0,1]$, then we compute the context vector given by :
 \begin{equation}
 	\mbf{c}_s = \sum_{i=1}^{T}\alpha_i \mbf{v}_i
 \end{equation}
-This later is then concatenated with $\mbf{q}_s$ to produce the final output of the decoder at step $s$.
+This latter is then concatenated with $\mbf{q}_s$ to produce the final output of the decoder at step $s$.
 
-Finally, we train each model with at most $50$ epochs, using the NAdam optimizer with $10^{-3}$ as the learning rate. Note that we did not perform any explicit hyperparameter tuning for these models. We use a sentence to observe the evolution of the model during training and stop it once it has output a perfect prediction, or there is no more evolution in the loss value during training (manually ...). This is done to avoid over-fitting on the training set.
+Finally, we train each model with at most $50$ epochs, using the NAdam optimizer with $10^{-3}$ as the learning rate. Note that we did not perform any explicit hyperparameter tuning for these models. We use a sentence to observe the evolution of the model during training and stop it once it has output a perfect prediction, or there is no more evolution of the value of loss during training (manually ...). This is done to avoid overfitting on the training set.
 
 \subsection{Using a Pre-trained Model}
 A pre-trained model is a model which is already trained on some data set for a specific task. So, Leveraging such a model can be a highly efficient approach, and allows us to save substantial time and resources. Usually trained on massive amounts of data, therefore it contains already an important amount of information.
 
-For this task, we will perform a fine-tuning, e.g., we will re-train the model on our dataset to give the model a more specific domain and vocabulary as it may have not seen data such as engineering assessment. This practice is also known as domain shifting.
+For this task, we will perform a fine-tuning, e.g., we will retrain the model on our dataset to give the model a more specific domain and vocabulary as it may have not seen data such as engineering assessment. This practice is also known as domain shifting.
 
-Since we aim to translate English to Afrikaans, we fine-tune the \texttt{opus-mt-en-af} model which can already perform the given task but has not yet adapted to our requirement. Based on the Marian-MT framework \cite{marian}, this model is part of a larger collection of open-source high-performant Neural Machine Translation (NMT) models \cite{OPUSMT}.
+Since we aim to translate English to Afrikaans, we fine-tune the \texttt{opus-mt-en-af} model which can already perform the given task but has not yet adapted to our requirement. Based on the Marian-MT framework \cite{marian}, this model is part of a larger collection of open-source high-efficient Neural Machine Translation (NMT) models \cite{OPUSMT}.
 
 The opus-mt-en-af model was initially trained on a public dataset from the Open Parallel Corpora \cite{opus}, which contains a strong foundation. However, it may not contain some specific vocabulary from the engineering domain. Thus by fine-tuning the model on our dataset, we expect to improve its performance in handling these specialized terms and phrases. Here we only use the engineering assessment data set because the Tatoeba data set is part of the training data of the model.
 
@@ -185,7 +185,7 @@ For the fine-tuning, we evaluate it before the training and after training on th
 After training our model, we present in this section the results and discussion related to our experimentation.
 
 \subsection{From-Scratch Implementation}
-Figure \ref{fig:loss1} shows the loss per epoch for each model. We stopped the training at specific epochs to avoid over-fitting on the training set once we had several epochs where the model predicted our monitoring sentence perfectly. We also note that we did not perform any hyperparameter tuning.
+Figure \ref{fig:loss1} shows the loss per epoch for each model. We stopped the training at specific epochs to avoid overfitting on the training set once we had several epochs where the model predicted our monitoring sentence perfectly. We also note that we did not perform any hyperparameter tuning.
 
 \begin{figure}[H]
 	\centering
@@ -194,7 +194,7 @@ Figure \ref{fig:loss1} shows the loss per epoch for each model. We stopped the t
 	\label{fig:loss1}
 \end{figure}
 
-As we can observe, the vanilla RNN got stuck during the training process, which is confirmed in Table \ref{tab:tab1}, but it may be improved by adjusting some of the hyper-parameter of the model we did not do that. However, it drastically improved.
+As we can observe, the vanilla RNN got stuck during the training process, which is confirmed in Table \ref{tab:tab1}, but it may be improved by adjusting some of the hyperparameters of the model we did not do that. However, it drastically improved.
 
 On the other hand, the other model converges quickly into an optimal parameter.
 
@@ -219,10 +219,11 @@ Table \ref{tab:tab1} provides the BLEU scores for each model on augmented Valida
 
 We also observe a huge difference between the Vanilla RNNs and the RNNs with Attention, while the performance of other models dropped with the attention mechanism.
 
-However, using an attention mechanism stabilizes the model training, thus these performances can be improved through some hyper-parameter tuning.
+However, using an attention mechanism stabilizes the model training, thus these performances can be improved through some hyperparameter tuning.
 
-Using these models we have for example ``motivate your answer'', is translated into ``motiveer jou'',  where the reference ise ``motiveer jou antwoord''. This is the only which appears good from the example that we printed out \footnote{We can see more examples in the notebook}.
+Using these models, we have for example ``motivate your answer'', is translated into ``motiveer jou'',  where the reference ise ``motiveer jou antwoord''. This is the only which appears good from the example that we printed out \footnote{We can see more examples in the notebook}.
 
+We cannot really able to say something about the beam search and greey search on these results, as they give too similar results, in addition we only use three branch fro the beam search (width=3).
 
 Now let us have a look at the result from the fine-tuned model.
 
@@ -250,7 +251,7 @@ As we measured the BLEU score on the validation set before and after training, T
 	\caption{BLEU score of the original and fine-tuned opus-mt model on the validation set}
 	\label{tab:fine}
 \end{table}
-Overall,  fine-tuning a model is beneficial when we have a small dataset, and it proved a more handy and better implementation by avoiding re-inventing things that already exist. We can see some examples of translation in Figure \ref{fig:example}.
+Overall,  fine-tuning a model is beneficial when we have a small dataset, and it proved a more handy and better implementation by avoiding reinventing things that already exist. We can see some examples of translation in Figure \ref{fig:example}.
 
 \begin{figure}[H]
 	\centering
@@ -264,20 +265,21 @@ Overall,  fine-tuning a model is beneficial when we have a small dataset, and it
 \subsection{General discussion between the two approaches}
 Comparing the from-scratch models and the fine-tuned models, several points emerge:
 \begin{itemize}
-	\item Training Efficiency: The from-scratch models required careful monitoring to avoid over-fitting, hyper-parameter tuning, and architecture choice which may require huge computation resources depending on architecture and dataset. In contrast, fine-tuning a pre-trained model was more efficient and resulted in better performance by leveraging the existing functionality.
+	\item Training Efficiency: The from-scratch models required careful monitoring to avoid overfitting, hyperparameter tuning, and architecture choice which may require huge computation resources depending on architecture and dataset. In contrast, fine-tuning a pre-trained model was more efficient and resulted in better performance by leveraging the existing functionality.
 
 	\item Model Performance: The best from-scratch model (GRU/RNN+Att) achieved a BLEU score of 0.38/0.37, which is close to the fine-tuned model's score of 0.37. This demonstrates that while from-scratch models can achieve competitive performance, but may require a bigger effort.
 \end{itemize}
 
-An important thing to mention is the dataset, to develop a domain-specific machine translation, it is always better to gather as much as possible the model some data from the domain of interest. Otherwise will spend a lot of time tuning and training it to obtain a poor performance at the end.
+An important thing to mention is the dataset, to develop a domain-specific machine translation, it is always better to gather as much as possible the model some data from the domain of interest. Otherwise we  will spend a lot of time tuning and training it to obtain a poor performance at the end.
 
 
 \section{Conclusion}
-In conclusion, we have explored the basis of Neural Machine translation and learned how to implement the vanilla RNN, GRU, and LSTM including a version with an attention mechanism, using PyTorch to translate English to Afrikaans. We also fine-tuned the ``\texttt{opus-mt-en-af}'' to perform the same task. Our best model GRU from scratch achieved a BLEU score of 0.38 on the augment data set while the fine-tuned model achieved 0.37. We also encounter the importance of the training data to obtain a translation of quality. The future perspective is to improve the coding styles and architecture to have a useful code base and try other tokenization approaches as well as hyper-parameter tuning.
+In conclusion, we have explored the basis of Neural Machine translation and learned how to implement the vanilla RNN, GRU, and LSTM including a version with an attention mechanism, using PyTorch to translate English to Afrikaans. We also fine-tuned the ``\texttt{opus-mt-en-af}'' to perform the same task. Our best model GRU from scratch achieved a BLEU score of 0.38 on the augment data set while the fine-tuned model achieved 0.37. We also encounter the importance of the training data to obtain a translation of quality. The future perspective is to improve the coding styles and architecture to have a useful code base and try other tokenization approaches as well as hyperparameter tuning.
 
 \begin{thebibliography}{1}
 
 	\bibitem{kamper2022nlp817} Herman Kamper. \emph{NLP817}. \href{https://www.kamperh.com/nlp817/}{https://www.kamperh.com/nlp817/}, 2022--2024.
+	\bibitem{allad} Aladdin Persson, Pytorch Seq2Seq Tutorial for Machine Translation, \href{https://www.youtube.com/watch?v=EoGUlvhRYpk}{https://www.youtube.com/watch?v=EoGUlvhRYpk}
 	\bibitem{huggingface} Hugging Face \href{https://huggingface.co/}{https://huggingface.co/}
 	\bibitem{tatoeba} Tatoeba \href{https://tatoeba.org/en}{https://tatoeba.org/en}, 16/07/2024.
 	\bibitem{opus} Open Parallel Corpora \href{https://opus.nlpl.eu/}{https://opus.nlpl.eu/}

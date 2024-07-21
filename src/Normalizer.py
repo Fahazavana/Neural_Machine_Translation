@@ -22,7 +22,7 @@ def process_line(line):
     text = new_text
     text = re.sub(r"\s{2,}", " ", text)
     text = text.lower()
-    line = re.sub(r"\s{2,}", " ", line)  # ???? But it works
+    line = re.sub(r"\s{2,}", " ", line) # fix the issue of double spacing
     text = text.strip().split()
     if text[-1] != "<eos>":
         text.append("<eos>")

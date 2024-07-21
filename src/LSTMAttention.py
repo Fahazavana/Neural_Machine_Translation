@@ -38,11 +38,11 @@ class Decoder(nn.Module):
         )
         alpha = attn_scores.softmax(
             dim=1
-        )  # Alpha: B x L (L - encoder output sequence length)
+        )  # Alpha: B x L
         context = torch.bmm(alpha.unsqueeze(1), encoder_outputs)  # Context: 1 x B x H
         output = torch.cat(
             (decoded.permute(1, 0, 2), context.permute(1, 0, 2)), dim=-1
-        )  # Concatenate on hidden size dimension
+        ) 
         ##############################################################################################
         prediction = self.fc(output)
         # pred: 1 x B x V -> B x V_out

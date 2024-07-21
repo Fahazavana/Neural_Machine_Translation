@@ -65,7 +65,7 @@ Ensure all dependencies are installed before running the project.
     - Raw validation data
 
 - **report/**: Contains the report documents and figures.
-  - **figures/**: Visual aids and figures used in the report.
+  - **figures/**: Figures used in the report.
   - **content.tex**: LaTeX content file for the report.
   - **main.pdf**: Compiled PDF of the report.
   - **main.tex**: Main LaTeX file for the report.
@@ -97,16 +97,16 @@ Ensure all dependencies are installed before running the project.
 
 ## Usage
 
-1. **Data Preparation**: Ensure the datasets are correctly placed in the `data` directory.
-2. **Training**: Use the provided Jupyter Notebooks (e.g., `00-RNN.ipynb`, `01-GRU.ipynb`) to train the models.
-3. **Evaluation**: With each notebook
-
+1. **Data Preparation**: Ensure the datasets are correctly placed in the `data` directory, and run ```00-Data_Preparation.ipynb```.
+2. **Training**: Use the provided Jupyter Notebooks (e.g., `01-RNN.ipynb`, `02-GRU.ipynb`) to train the models.
+3. **Evaluation**: Conatained in each notebook.
 
 **PS** There might be some icomabatibilty with ```cuda``` as all the code was tested pricipally on Apple Silicon M3 (but it sould work). The choice of the device (```mps, cuda, cpu```) is automatically selected based on the ``os` and ```GPU``` availability.
 
 ## References
 
 * Herman Kamper, NLP817, [https://www.kamperh.com/nlp817]()
+* Aladdin Persson, Pytorch Seq2Seq Tutorial for Machine Translation, [https://www.youtube.com/watch?v=EoGUlvhRYpk]()
 * Hugging Face [https://huggingface.co/]()
 * Tatoeba [https://tatoeba.org/en]()
 * Open Parallel Corpora [https://opus.nlpl.eu/]()
