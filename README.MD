@@ -101,6 +101,9 @@ Ensure all dependencies are installed before running the project.
 2. **Training**: Use the provided Jupyter Notebooks (e.g., `00-RNN.ipynb`, `01-GRU.ipynb`) to train the models.
 3. **Evaluation**: With each notebook
 
+
+**PS** There might be some icomabatibilty with ```cuda``` as all the code was tested pricipally on Apple Silicon M3 (but it sould work). The choice of the device (```mps, cuda, cpu```) is automatically selected based on the ``os` and ```GPU``` availability.
+
 ## References
 
 * Herman Kamper, NLP817, [https://www.kamperh.com/nlp817]()
