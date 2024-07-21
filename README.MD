@@ -2,7 +2,7 @@
 
 ## Project Description
 
-This project focuses on translating English to Afrikaans using various neural network architectures. The primary aim is to compare the performance of different models, including:
+This project focuses on translating English to Afrikaans using various neural network architectures. 
 
 * Vanilla Architectures:
   * Recurrent Neural Networks (RNN)

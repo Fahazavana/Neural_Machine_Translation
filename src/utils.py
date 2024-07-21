@@ -63,6 +63,7 @@ def train_model(
     for epoch in range(epochs):
         pbar = tqdm(train_loader, unit="batch", desc=f"Epoch {epoch + 1}/{epochs}")
         run_loss = 0
+		model.train()
         for source, target in pbar:
             source = source.to(device)
             target = target.to(device)
