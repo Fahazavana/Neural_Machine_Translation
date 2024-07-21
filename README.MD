@@ -13,7 +13,7 @@ This project focuses on translating English to Afrikaans using various neural ne
   * GRU with Attention
   * LSTM with Attention
 
-These models are trained on a private dataset containing an Engineering Assessment corpus from Stellenbosch University and augmented with data from the Tatoeba project. The project also explores different decoding strategies, such as greedy search and beam search, to optimize translation quality.
+These models are trained on a educational corpus from Stellenbosch University and augmented with data from the Tatoeba project. The project also explores different decoding strategies, such as greedy search and beam search, to optimize translation quality.
 
 ## Dependencies
 
@@ -104,8 +104,8 @@ Ensure all dependencies are installed before running the project.
 ## References
 
 * Herman Kamper, NLP817, [https://www.kamperh.com/nlp817]()
-
 * Hugging Face [https://huggingface.co/]()
+* Tatoeba [https://tatoeba.org/en]()
 * Open Parallel Corpora [https://opus.nlpl.eu/]()
 * PyTorch: AdamW [https://pytorch.org/docs/stable/generated/torch.optim.AdamW.html]()
 * Google Sentencepiece [https://github.com/google/sentencepiece]()

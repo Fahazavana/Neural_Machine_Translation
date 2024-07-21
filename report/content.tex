@@ -122,7 +122,7 @@ Which can be done by using gradient based optimisation.
 This section present different part of the methodology in our experimentation and the reasons behind them.
 
 \subsection{Dataset}
-The initial dataset is a relatively small parallel English-Afrikaans from engineering assessment of the Stellenbosch University. This dataset is then augmented with a data from the Tatoeba project \cite{tatoeba}. As, the assessment comes from several latex file, we combine all the mathematical environment by removing spaces to treat them as a single word. We also add space on delimiter characters such as ``(),[],\{\}'' to treat them as a single word, the removing extra spaces. Finally we switched it into lower case to be more efficient for our from-scratch implementation, and special character token line for start of sentence and end of sentence are used to replace ``!, ? and .'' in the text.
+The initial dataset is a relatively small parallel English-Afrikaans from engineering assessment of the Stellenbosch University. This dataset is then augmented with a data from Tatoeba \cite{tatoeba}. As, the assessment comes from several latex file, we combine all the mathematical environment by removing spaces to treat them as a single word. We also add space on delimiter characters such as ``(),[],\{\}'' to treat them as a single word, the removing extra spaces. Finally we switched it into lower case to be more efficient for our from-scratch implementation, and special character token line for start of sentence and end of sentence are used to replace ``!, ? and .'' in the text.
 
 
 But, in the second part of the experimentation we just handle the latex mathematical environment without changing the case, and use the tokenizer provided by the pre-trained model that we use.
@@ -199,16 +199,16 @@ As we can observe, the vanilla RNN got stuck during the training process, which 
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{@{}lccccc@{}}
+	\begin{tabular}{lccccc}
 		\cmidrule(l){3-6}
 		\multicolumn{2}{l}{} & \multicolumn{2}{c}{Validation Set 1} & \multicolumn{2}{c}{Validation Set 2} \\ \midrule
 		Model     & \#Epochs & BLEU G          & BLEU B         & BLEU G          & BLEU B         \\ \midrule
-		RNN       & 50       & 0.05            & 0.02           & 0.05            & 0.02           \\
-		GRU       & 15       & 0.38            & 0.35           & 0.14            & 0.12           \\
-		LSTM      & 20       & 0.28            & 0.24           & 0.12            & 0.10           \\
-		RNN+Att.  & 15       & 0.39            & 0.33           & 0.18            & 0.17           \\
-		GRU+Att.  & 15       & 0.31            & 0.32           & 0.13            & 0.16           \\
-		LSTM+Att. & 20       & 0.28            & 0.30           & 0.11            & 0.13           \\ \bottomrule
+		RNN       & 50       & 0.07            & 0.05           & 0.10            & 0.08           \\
+		GRU       & 15       & 0.38            & 0.36           & 0.15            & 0.12           \\
+		LSTM      & 30       & 0.34            & 0.33           & 0.14            & 0.13           \\
+		RNN+Att.  & 20       & 0.37            & 0.33           & 0.17            & 0.17           \\
+		GRU+Att.  & 15       & 0.30            & 0.33           & 0.12            & 0.14           \\
+		LSTM+Att. & 20       & 0.30            & 0.29           & 0.12            & 0.13           \\ \bottomrule
 	\end{tabular}
 	\caption{BLEU scores for each from-scratch model on the validation set}
 	\label{tab:tab1}
@@ -271,6 +271,7 @@ In conclusion, while training models from scratch can yield high-performing mode
 
 \bibitem{kamper2022nlp817} Herman Kamper. \emph{NLP817}. \href{https://www.kamperh.com/nlp817/}{https://www.kamperh.com/nlp817/}, 2022--2024.
 \bibitem{huggingface} Hugging Face \href{https://huggingface.co/}{https://huggingface.co/}
+\bibitem{tatoeba} Tatoeba \href{https://tatoeba.org/en}{https://tatoeba.org/en}, 16/07/2024.
 \bibitem{opus} Open Parallel Corpora \href{https://opus.nlpl.eu/}{https://opus.nlpl.eu/}
 \bibitem{AdamW} AdamW \href{https://pytorch.org/docs/stable/generated/torch.optim.AdamW.html}{https://pytorch.org/docs/stable/generated/torch.optim.AdamW.html}
 \bibitem{sentencepiece} Sentencepiece \href{https://github.com/google/sentencepiece}{https://github.com/google/sentencepiece}
